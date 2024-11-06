@@ -11,14 +11,14 @@
     <modules>
         <module>inmemory-event-store</module>
         <module>micro-es</module>
-        <module>sample-faculty</module>
+        <module>sample-rental</module>
         <module>event-store-api</module>
         <module>micro-es-test</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <reactor.version>3.6.7</reactor.version>
         <jupiter.version>5.11.0-M2</jupiter.version>
