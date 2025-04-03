@@ -4,7 +4,7 @@ import io.event.thinking.eventstore.api.Criteria;
 import io.event.thinking.eventstore.api.Index;
 import io.event.thinking.micro.es.DcbCommandHandler;
 import io.event.thinking.micro.es.Event;
-import io.event.thinking.sample.rental.api.command.RentCar;
+import io.event.thinking.sample.rental.api.command.RentCarAndBike;
 import io.event.thinking.sample.rental.api.event.BikeRented;
 import io.event.thinking.sample.rental.api.event.CarRented;
 
@@ -16,11 +16,11 @@ import static io.event.thinking.micro.es.Indices.typeIndex;
 import static io.event.thinking.sample.rental.commandhandler.Indices.bikeIndex;
 import static io.event.thinking.sample.rental.commandhandler.Indices.carIndex;
 
-public class RentCarCommandHandler
-        implements DcbCommandHandler<RentCar, RentCarCommandHandler.State> {
+public class RentCarAndBikeCommandHandler
+        implements DcbCommandHandler<RentCarAndBike, RentCarAndBikeCommandHandler.State> {
 
     @Override
-    public Criteria criteria(RentCar cmd) {
+    public Criteria criteria(RentCarAndBike cmd) {
         var criterion = List.of(
                 criterion(typeIndex(CarRented.NAME), carIndex(cmd.carId())),
                 criterion(typeIndex(BikeRented.NAME), bikeIndex(cmd.bikeId()))
@@ -35,7 +35,7 @@ public class RentCarCommandHandler
     }
 
     @Override
-    public List<Event> handle(RentCar cmd, State state) {
+    public List<Event> handle(RentCarAndBike cmd, State state) {
          if(state.rentedCars.contains(cmd.carId())) throw new IllegalStateException("car rented");
         if(state.bikesRented.contains(cmd.bikeId())) throw new IllegalStateException("bike rented");
 

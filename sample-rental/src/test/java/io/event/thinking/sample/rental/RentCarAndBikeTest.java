@@ -1,24 +1,24 @@
 package io.event.thinking.sample.rental;
 
 import io.event.thinking.micro.es.test.CommandHandlerFixture;
-import io.event.thinking.sample.rental.api.command.RentCar;
+import io.event.thinking.sample.rental.api.command.RentCarAndBike;
 import io.event.thinking.sample.rental.api.event.BikeRented;
 import io.event.thinking.sample.rental.api.event.CarRented;
-import io.event.thinking.sample.rental.commandhandler.RentCarCommandHandler;
+import io.event.thinking.sample.rental.commandhandler.RentCarAndBikeCommandHandler;
 import org.junit.jupiter.api.*;
 
 import java.util.UUID;
 
 import static io.event.thinking.sample.rental.Indexing.multiEventIndexer;
 
-class SubscribeStudentTest {
+class RentCarAndBikeTest {
 
-    private CommandHandlerFixture<RentCar> fixture;
+    private CommandHandlerFixture<RentCarAndBike> fixture;
 
     @BeforeEach
     void setUp() {
-        fixture = new CommandHandlerFixture<>(RentCar.class,
-                new RentCarCommandHandler(),
+        fixture = new CommandHandlerFixture<>(RentCarAndBike.class,
+                new RentCarAndBikeCommandHandler(),
                 multiEventIndexer());
     }
 
@@ -28,7 +28,7 @@ class SubscribeStudentTest {
         var bikeId = UUID.randomUUID();
 
         fixture.givenNoEvents()
-                .when(new RentCar(carId, bikeId))
+                .when(new RentCarAndBike(carId, bikeId))
                 .expectEvents(new CarRented(carId), new BikeRented(bikeId));
     }
 
@@ -38,7 +38,7 @@ class SubscribeStudentTest {
         var bikeId = UUID.randomUUID();
 
         fixture.given(new BikeRented(bikeId))
-                .when(new RentCar(carId, bikeId))
+                .when(new RentCarAndBike(carId, bikeId))
                 .expectException(IllegalStateException.class, "bike rented");
     }
 
@@ -49,7 +49,7 @@ class SubscribeStudentTest {
         var bikeId = UUID.randomUUID();
 
         fixture.given(new CarRented(carId))
-                .when(new RentCar(carId, bikeId))
+                .when(new RentCarAndBike(carId, bikeId))
                 .expectException(IllegalStateException.class, "car rented");
     }
 
@@ -60,7 +60,7 @@ class SubscribeStudentTest {
         var bikeId = UUID.randomUUID();
 
         fixture.given(new CarRented(UUID.randomUUID()))
-                .when(new RentCar(carId, bikeId))
+                .when(new RentCarAndBike(carId, bikeId))
                 .expectEvents(new CarRented(carId), new BikeRented(bikeId));
     }
 
